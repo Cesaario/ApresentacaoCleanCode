@@ -13,7 +13,7 @@ typedef struct parametros_thread
   int index;
 } parametros_thread;
 
-#define NUMERO_THREADS 10
+#define NUMERO_THREADS 2
 #define CONTAGEM_ESPERADA 10000000
 
 DWORD WINAPI Contar(LPVOID parametros_thread);
@@ -31,7 +31,7 @@ int main()
   for (int i = 0; i < NUMERO_THREADS; i++)
   {
     parametros[i].index = i;
-    parametros[i].contagemThread = CONTAGEM_ESPERADA/NUMERO_THREADS;
+    parametros[i].contagemThread = CONTAGEM_ESPERADA / NUMERO_THREADS;
 
     threads[i] = (HANDLE)_beginthreadex(
         NULL,
@@ -65,24 +65,6 @@ int main()
   return 0;
 }
 
-int nsleep(long miliseconds)
-{
-   struct timespec req, rem;
-
-   if(miliseconds > 999)
-   {   
-        req.tv_sec = (int)(miliseconds / 1000);                            /* Must be Non-Negative */
-        req.tv_nsec = (miliseconds - ((long)req.tv_sec * 1000)) * 1000000; /* Must be in range of 0 to 999999999 */
-   }   
-   else
-   {   
-        req.tv_sec = 0;                         /* Must be Non-Negative */
-        req.tv_nsec = miliseconds * 1000000;    /* Must be in range of 0 to 999999999 */
-   }   
-
-   return nanosleep(&req , &rem);
-}
-
 DWORD WINAPI Contar(LPVOID params)
 {
   parametros_thread *parametros = (parametros_thread *)params;
@@ -93,4 +75,3 @@ DWORD WINAPI Contar(LPVOID params)
   }
   return 0;
 }
-
